@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Finance</fullName>
+        <default>false</default>
+        <label>Finance</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Decision Maker</fullName>
+        <default>false</default>
+        <label>Decision Maker</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Influencer</fullName>
+        <default>false</default>
+        <label>Influencer</label>
+    </standardValue>
+    <standardValue>
+        <fullName>IT</fullName>
+        <default>false</default>
+        <label>IT</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Business Owner</fullName>
+        <default>false</default>
+        <label>Business Owner</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Executive Sponsor</fullName>
+        <default>false</default>
+        <label>Executive Sponsor</label>
+    </standardValue>
+</StandardValueSet>

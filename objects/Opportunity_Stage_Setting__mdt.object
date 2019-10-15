@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Custom object used in Opportunity trigger to validate Stage against Opportunity Contact Roles</description>
+    <fields>
+        <fullName>Contact_Role__c</fullName>
+        <businessStatus>Active</businessStatus>
+        <description>Field to store Opportunity stage name. Used in OpportunityTriggerServices</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Populate Contact role which is validated against Opportunity Stage</inlineHelpText>
+        <label>Contact Role</label>
+        <length>255</length>
+        <required>true</required>
+        <securityClassification>Internal</securityClassification>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Stage__c</fullName>
+        <businessStatus>Active</businessStatus>
+        <description>Field to store Opportunity stage name. Used in OpportunityTriggerServices</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Populate Opportunity Stage to validate against Contact Role</inlineHelpText>
+        <label>Opportunity Stage</label>
+        <length>255</length>
+        <required>true</required>
+        <securityClassification>Internal</securityClassification>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Opportunity Stage Setting</label>
+    <pluralLabel>Opportunity Stage Settings</pluralLabel>
+    <visibility>Protected</visibility>
+</CustomObject>
