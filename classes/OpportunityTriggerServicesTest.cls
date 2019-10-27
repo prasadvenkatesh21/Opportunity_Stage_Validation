@@ -19,45 +19,66 @@ public class OpportunityTriggerServicesTest {
         contactList.add(contact1);
         insert contactList;
         
+        List<Opportunity> opportunityList = new List<Opportunity>();
         Opportunity opportunity1 = new Opportunity(AccountId = account1.Id, Name= 'Test Opportunity 1', CloseDate = date.newInstance(2020, 11, 21),
                                                    StageName = 'Prospecting');
-        insert opportunity1;
+        opportunityList.add(opportunity1);
+        opportunity1 = new Opportunity(AccountId = account1.Id, Name= 'Test Opportunity 2', CloseDate = date.newInstance(2021, 09, 21),
+                                                   StageName = 'Proposal');
+        opportunityList.add(opportunity1);
+        insert opportunityList;
+        
         
     }
     
     //unhappy path testing
     @isTest static void changeOpportunityStageNoCR(){
-        Opportunity opp1 = [Select StageName FROM Opportunity WHERE Account.Name = 'Test Account 1'];
+        Account acc1 = [Select Id FROM Account Limit 1];
+       	Opportunity opp1 = [Select StageName FROM Opportunity WHERE AccountId = :acc1.Id and Name = 'Test Opportunity 1'];
         string systemErrorMessage;
         String validationErrorMessage;
         
         try{
-            validationErrorMessage = 'FIELD_CUSTOM_VALIDATION_EXCEPTION, Decision Maker Contact Role is required to move the Opportunity to Identify Decision';
+            validationErrorMessage = 'FIELD_CUSTOM_VALIDATION_EXCEPTION, Influencer, Decision Maker Contact Role/s is/are required to move the Opportunity to Identify Decision';
             opp1.StageName = 'Identify Decision Makers';
             update opp1;
         }catch(System.Exception ex){
             systemErrorMessage = ex.getMessage();
+            
         }
-        
-        System.assertEquals(true,systemErrorMessage.contains(validationErrorMessage),'Decision Maker Contact Role is required to move the Opportunity to Identify Decision may not exist' );
+        System.debug(systemErrorMessage);
+        System.assertEquals(true,systemErrorMessage.contains(validationErrorMessage),'Influencer, Decision Maker Contact Role/s is/are required to move the Opportunity to Identify Decision may not exist' );
         //^optional message to help dubugging in the future if Opportunity Stage Settings are changes
     }
     
     //happpy path testing
     @isTest static void changeOpportunityStageWithCR(){
         Account acc1 = [Select Id FROM Account Limit 1];
-        Opportunity opp1 = [Select StageName FROM Opportunity WHERE AccountId = :acc1.Id];
+        Opportunity opp1 = [Select StageName FROM Opportunity WHERE AccountId = :acc1.Id and Name = 'Test Opportunity 2'];
         Contact con1 = [Select Id FROM Contact WHERE AccountId = :acc1.Id Limit 1];
         string systemErrorMessage;
         String validationErrorMessage;
         try{
             validationErrorMessage = null;
+            List<OpportunityContactRole> OCRList = new List<OpportunityContactRole>();
             OpportunityContactRole ocr1 = new OpportunityContactRole(Role = 'Finance', ContactId = con1.Id,OpportunityId = opp1.Id); //create associated opportunity contact role
-            insert ocr1;
+            OCRList.add(ocr1);
+            ocr1 = new OpportunityContactRole(Role = 'Finance', ContactId = con1.Id,OpportunityId = opp1.Id); 
+            OCRList.add(ocr1);
+            ocr1 = new OpportunityContactRole(Role = 'Influencer', ContactId = con1.Id,OpportunityId = opp1.Id); 
+            OCRList.add(ocr1);
+            ocr1 = new OpportunityContactRole(Role = 'Decision Maker', ContactId = con1.Id,OpportunityId = opp1.Id); //create associated opportunity contact role
+            OCRList.add(ocr1);
+            ocr1 = new OpportunityContactRole(Role = 'IT', ContactId = con1.Id,OpportunityId = opp1.Id); 
+            OCRList.add(ocr1);
+            ocr1 = new OpportunityContactRole(Role = 'Executive Sponsor', ContactId = con1.Id,OpportunityId = opp1.Id); 
+            OCRList.add(ocr1);
+            insert OCRList;
+            opp1.StageName = 'Closed/Lost';
+            update opp1;
         }catch(System.Exception ex){
             systemErrorMessage = ex.getMessage();
         }
-        
         System.assertEquals(validationErrorMessage,systemErrorMessage, 'Check changeOpportunityStageWithCR method');
     }
     
